@@ -1,0 +1,641 @@
+{
+  "name": "Outlook Job Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "readStatus": "both"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        96
+      ],
+      "id": "2b7826b0-0a12-4347-974c-5812a192a0d4",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "AMb4RA8ECp9BQNxe",
+          "name": "Microsoft Outlook account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"job_title\": \"Programmamanager Digitale Weerbaarheid\",\n    \"customer\": \"string\",\n    \"location\": \"Enschede\",\n    \"rate\": \"€ 115,00\",\n    \"duration_end_date\": \"31-12-2026\",\n    \"closing_date\": \"27 feb 2026 12:00\",\n    \"broker\": \"Magnit\",\n    \"job_description\": \"string\",\n    \"link\": \"https://...\"\n  },\n  {\n    \"job_title\": \"Management Assistent(e) LPN Area South\",\n    \"customer\": \"string\",\n    \"location\": \"Arnhem (hybride)\",\n    \"rate\": \"€ 65,00\",\n    \"duration_end_date\": \"31-12-2026\",\n    \"closing_date\": \"18 feb 2026 12:00\",\n    \"broker\": \"Magnit\",\n    \"job_description\": \"string\",\n    \"link\": \"https://...\"\n  }\n]",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1744,
+        320
+      ],
+      "id": "64cbd3fc-7f90-4969-ba80-5246958483af",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"label\": \"VACANCY\",\n  \"confidence\": 0.93\n}\n",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1024,
+        320
+      ],
+      "id": "e366f69f-e610-4b77-bfef-471dbc1ba55d",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        896,
+        320
+      ],
+      "id": "f3c9f8a3-da54-4c9e-ba9b-e8f12e141bfe",
+      "name": "OpenAI Chat Model1",
+      "credentials": {
+        "openAiApi": {
+          "id": "cbI7X1RhPekZXbCG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1104,
+        528
+      ],
+      "id": "afd9144e-a44a-46d2-b1ec-4eaf50fc5bd9",
+      "name": "OpenAI Chat Model2",
+      "credentials": {
+        "openAiApi": {
+          "id": "cbI7X1RhPekZXbCG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1824,
+        528
+      ],
+      "id": "9c2f8993-5451-44e9-b68f-a5655059e24e",
+      "name": "OpenAI Chat Model3",
+      "credentials": {
+        "openAiApi": {
+          "id": "cbI7X1RhPekZXbCG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "output": "raw",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        224,
+        96
+      ],
+      "id": "d3cbdcad-049e-477e-bd20-2424595a3ed3",
+      "name": "Get message detail",
+      "webhookId": "b5db1c2b-96bd-4b72-b716-6692fe17949f",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "AMb4RA8ECp9BQNxe",
+          "name": "Microsoft Outlook account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "47a35203-2d38-40f3-b1f1-a4daa6ed9658",
+              "leftValue": "={{ $input.item.json.from?.emailAddress?.address?.toLowerCase() || $json.from?.toLowerCase() }}{{ $('Microsoft Outlook Trigger').item.json.from }}{{ $json.sender.emailAddress.address }}{{ $json.from.emailAddress.address }}",
+              "rightValue": "=@helixons.nl",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "fe769748-ae17-4ebf-9ab6-74e959f47075",
+              "leftValue": "={{ $input.item.json.from?.emailAddress?.address?.toLowerCase() || $json.from?.toLowerCase() }}{{ $('Microsoft Outlook Trigger').item.json.from }}{{ $json.sender.emailAddress.address }}{{ $json.from.emailAddress.address }}",
+              "rightValue": "recruitment@helixons.nl",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        448,
+        96
+      ],
+      "id": "1cebe9c6-0938-49db-9132-f3ea4ea02bc2",
+      "name": "Filter Internal"
+    },
+    {
+      "parameters": {
+        "resource": "folder",
+        "operation": "get",
+        "folderId": {
+          "__rl": true,
+          "value": "={{ $json.parentFolderId }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        672,
+        96
+      ],
+      "id": "978015e0-0879-48fa-9db5-4194f2cb8836",
+      "name": "Get folder of mail",
+      "webhookId": "f44f4466-9da0-4200-aa16-e268bec2a815",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "AMb4RA8ECp9BQNxe",
+          "name": "Microsoft Outlook account 3"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Subject:\n{{ $('Filter Internal').item.json.subject }}\n\nBody:\n{{ $('Filter Internal').item.json.bodyPreview }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an email classification engine.\n\nClassify emails strictly into ONE of the following labels:\n- VACANCY\n- NOT_VACANCY\n\nA VACANCY email includes:\n- Hiring for a role or position\n- Job title or vacancy mention\n- Job description or responsibilities\n- Rate, salary, contract, or compensation details\n- Requests for candidates or CVs\n\nNOT_VACANCY includes:\n- Invoices, bills, receipts\n- Meeting invites or calendar updates\n- Newsletters or marketing emails\n- System notifications\n- Email replies like \"Thanks\", \"Noted\", \"Received\"\n\nRules:\n- Choose exactly ONE label\n- Do not explain your choice\n- Do not add extra text\n\nOutput must be like this:\n{\n  \"label\": \"VACANCY\",\n  \"confidence\": 0.93\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        928,
+        96
+      ],
+      "id": "df50216c-3677-472c-922b-4769aa9759bb",
+      "name": "Checking if mail is of vacancy",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "daf4f2d5-ec06-4006-912f-8472825fdb3a",
+              "leftValue": "={{ $json.output.label.toUpperCase() }}",
+              "rightValue": "VACANCY",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        1392,
+        96
+      ],
+      "id": "0017b29e-04f2-4e43-993e-16ed23125472",
+      "name": "Filtering NON-Vacancy mails"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract vacancies data from the email below.\n\nFolder:\n{{ $('Get folder of mail').item.json.displayName }}\n\n- Sender Name: {{ $('Filter Internal')?.item?.json?.sender?.emailAddress?.name  ||  $('Filter Internal').item.json.from}}\n\n- Sender Email: {{ $('Filter Internal')?.item?.json?.sender?.emailAddress?.address || $('Filter Internal').item.json.from}}\n\nEmail Subject:\n{{ $('Filter Internal').item.json.subject }}\n\nEmail Body:\n{{ $('Filter Internal')?.item?.json?.body?.content || $('Filter Internal').item.json.bodyPreview}}\n\n{{ $('Filter Internal').item.json.body.content }}\n\n\nReturn the extracted data strictly following the required JSON structure.\n\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=🚨🚨🚨 CRITICAL INSTRUCTION - READ THIS FIRST 🚨🚨🚨\n\nYOU MUST EXTRACT **ALL** JOBS FROM THE EMAIL.\nIF THE EMAIL HAS 3 JOBS, YOU MUST RETURN 3 JSON OBJECTS.\nIF THE EMAIL HAS 1 JOB, YOU MUST RETURN 1 JSON OBJECT.\n\nNEVER STOP AFTER FINDING THE FIRST JOB.\nSCAN THE **ENTIRE EMAIL** FROM TOP TO BOTTOM.\nCOUNT THE JOBS FIRST, THEN EXTRACT ALL OF THEM.\n\n🚨🚨🚨 END CRITICAL INSTRUCTION 🚨🚨🚨\n\n========================\nSTEP-BY-STEP PROCESS\n========================\n\nSTEP 1: COUNT JOBS\nSearch for these patterns and count how many times they appear:\n- \"Nieuwe aanvraag\" or \"New request\" or \"Herhaalde aanvraag\"\n- \"Aanvraag:\" followed by a code (e.g., \"260212-MT-001\")\n- Multiple \"Bekijk aanvraag\" buttons\n- Repeated \"Deadline:\" fields\n- Multiple job titles after dash \"-\"\n\nExample: If you find \"Nieuwe aanvraag\" 3 times → 3 jobs\n\nSTEP 2: EXTRACT EACH JOB\nFor EACH job you counted:\n- Extract all 9 fields (job_title, customer, location, rate, duration_end_date, closing_date, broker, job_description, link)\n- Create one JSON object\n- Add it to the array\n- Move to the next job\n\nSTEP 3: VERIFY\nCheck: Does your JSON array have the same number of objects as jobs you counted?\n- YES → Proceed to output\n- NO → Go back and extract missing jobs\n\n========================\nYou are an expert vacancy data extraction engine specialized in parsing recruitment emails.\n\nTASK: Extract job vacancy information from emails that may vary in format, structure, and language (Dutch/English).\n\n========================\nEXTRACTION RULES BY FIELD\n========================\n\n1. JOB_TITLE\n   - Look for: \"Position:\", \"Role:\", \"Vacancy:\", \"Functie:\", \"We are looking for\", \"Hiring\"\n   - In multi-job emails: Look after \"Nieuwe aanvraag -\" or \"Herhaalde aanvraag -\"\n   - Extract the text immediately after the dash \"-\"\n   - Common patterns: \"Senior Developer\", \"Project Manager\", \"Werkvoorbereider\", \"Programmamanager Digitale Weerbaarheid\"\n   - If unclear, extract the most prominent job-related title\n   - Return \"UNKNOWN\" only if absolutely no job title exists\n\n2. CUSTOMER (formerly Client/Project)\n   - Look for: \"Client:\", \"Opdrachtgever:\", \"Project:\", \"For our client\", \"Assignment for\"\n   - May be a company name or project code\n   - Check email body for: \"Opdrachtgever [Company Name]\"\n   - Examples: \"Gemeente Aa en Hunze\", \"Stedin\", \"Gemeente Utrecht\", company names\n   - If sender represents the client, use sender's company name\n   - In multi-job emails: Customer might be same for all jobs or different\n   - Return \"UNKNOWN\" if not found\n   - If the sender IS the end client (e.g., Stedin sending directly), \n  set customer to that company name and broker to \"UNKNOWN\".\n\n3. LOCATION\n   - Look for: \"Location:\", \"Locatie:\", \"Based in\", \"Office in\", \"Werklocatie:\", \"Plaats van opdracht:\"\n   - Common formats: \"Amsterdam\", \"Remote\", \"Utrecht/Hybrid\", \"On-site Rotterdam\", \"Enschede\", \"Arnhem (hybride)\"\n   - Extract country if city is ambiguous\n   - Accept: \"Remote\", \"Hybrid\", \"On-site + location\"\n   - Return \"UNKNOWN\" if not found\n\n4. RATE\n   - Look for: \"Rate:\", \"Tarief:\", \"Salary:\", \"€\", \"EUR\", \"Max. uurtarief:\", \"per hour\", \"per day\"\n   - Common formats: \"€500/day\", \"€5000-6000/month\", \"€70k per year\", \"115,00\", \"65,00\"\n   - CRITICAL: ALWAYS include € symbol in output\n   - If range given, keep full range: \"€500-600/day\"\n   - Format: \"€ [amount]\" with space after €\n   - Examples: \"€ 115,00\", \"€ 65,00\", \"€ 81,00\"\n   - Return \"UNKNOWN\" if not found\n\n5. DURATION_END_DATE\n   - Look for: \"Duration:\", \"Duur:\", \"Contract period:\", \"Until:\", \"Tot:\", \"End date:\", \"Verwachte einddatum:\"\n   - Common formats: \"6 months\", \"Until Dec 2026\", \"1 year contract\", \"Permanent\", \"31-12-2026\", \"29-02-2028\"\n   - If temporary: extract duration or end date\n   - If permanent: return \"Permanent\" or \"Vast\"\n   - Return \"UNKNOWN\" if not specified\n\n6. CLOSING_DATE\n   - Look for: \"Closing date:\", \"Sluitingsdatum:\", \"Apply before:\", \"Deadline:\", \"Reageren voor:\", \"Deadline voor indienen:\"\n   - Extract exact date if given: \"15 February 2026\", \"27 feb 2026 12:00\", \"23 februari 2026 (maandag) 8:45\"\n   - Accept relative dates: \"End of month\", \"ASAP\", \"Immediate\", \"Zo spoedig mogelijk\"\n   - Format consistently: Keep original format from email\n   - Return \"UNKNOWN\" if not found\n\n7. BROKER\n   - You MUST choose from this approved list ONLY:\nMagnit, Mercell, CTM Solution, Staffing Management Services, Flextender, Striive, OneStopSourcing\n\n   - Match the sender name, email domain, or signature to the closest name on this list\n   - If no match found on the list → return \"UNKNOWN\"\n   - NEVER invent or guess a broker name not on this list\n   - Do NOT normalize or rename — use the exact string from the list above\n\n8. JOB_DESCRIPTION\n   - Extract full job summary if available\n   - Include: responsibilities, requirements, key skills\n   - Look for text describing the role, tasks, requirements\n   - If very long, prioritize key responsibilities\n   - For emails with minimal description, extract what's available\n   - Return \"UNKNOWN\" if no description exists\n\n9. LINK\n   - CRITICAL: Extract URLs for EACH job\n   - Look for: \"https://\", \"http://\", \"Bekijk aanvraag\", \"View request\", \"MINI-COMPETITIE OPENEN\" buttons\n   - Common patterns: \n     * Magnit: Links in orange/red buttons after each job (href=\"https://u11045313.ct.sendgrid.net/...\")\n     * StaffingMS: \"https://staffingdesk.my.site.com/vms/...\"\n     * Mercell: \"https://s2c.mercell.com/tender/...\"\n   - In multi-job emails: Each job typically has its own unique link\n   - Extract the actual URL from href attributes in HTML\n   - If multiple links for one job, prioritize the main action link (usually highlighted button)\n   - Return \"UNKNOWN\" if no link found for a specific job\n\n========================\nCRITICAL PARSING RULES\n========================\n\n✓ MULTIPLE JOBS HANDLING:\n  - ALWAYS scan the entire email for ALL job postings\n  - In Magnit emails: Look for repeated table structures with job details\n  - In Mercell emails: Look for multiple tender sections\n  - Each complete job entry has: Title, Code/Aanvraag, Location, Rate, Deadline, Link\n  - Extract EACH job as a SEPARATE JSON object\n  - DO NOT combine multiple jobs into one object\n  - DO NOT skip jobs - extract all from top to bottom\n  \n✓ ALWAYS search the ENTIRE email body, including:\n  - Email signature blocks (often contain broker names)\n  - Footer sections (may have additional details)\n  - HTML-formatted sections\n  - Bullet-pointed lists\n  - Orange/Red buttons or CTAs (Call-to-Action links)\n  - Table structures with repeated patterns\n  - Multiple <tr> groups in HTML tables\n  \n✓ Handle varied formats:\n  - Dutch: \"Functie:\", \"Opdrachtgever:\", \"Tarief:\", \"Duur:\", \"Locatie:\", \"Aanvraag:\", \"Deadline:\"\n  - English: \"Position:\", \"Client:\", \"Rate:\", \"Duration:\", \"Location:\", \"Request:\", \"Closing date:\"\n  - Be fully bilingual and handle mixed language emails\n\n✓ For UNKNOWN values:\n  - Only return \"UNKNOWN\" if the field genuinely doesn't exist in the email\n  - Don't mark as UNKNOWN if information is implied or inferable\n  - Use \"UNKNOWN\" instead of null, empty string, or missing field\n\n✓ Link extraction priority:\n  - ALWAYS extract the PRIMARY action link (usually highlighted/button)\n  - Look for links in: <a href=\"...\">, buttons with onclick, orange/red CTAs\n  - For Magnit emails: extract the link from \"Bekijk aanvraag\" button for EACH job\n  - For Mercell: extract from \"MINI-COMPETITIE OPENEN\" or direct links\n  - Each job should have its own unique link\n\n========================\nMULTI-JOB EMAIL INDICATORS\n========================\n\nCommon patterns that indicate multiple jobs in one email:\n\n1. MAGNIT FORMAT:\n   - Repeated table structures with job details\n   - Multiple \"Nieuwe aanvraag -\" or \"Herhaalde aanvraag -\" headers\n   - Each job has: \"Aanvraag:\", \"Startdatum:\", \"Verwachte einddatum:\", \"Plaats van opdracht:\", \"Max. uurtarief:\", \"Deadline:\"\n   - Multiple orange/red \"Bekijk aanvraag\" buttons\n   - Extract ALL occurrences, not just the first one\n\n2. MERCELL FORMAT:\n   - Multiple \"Tender:\" entries with different codes (T197497, T197498, etc.)\n   - Repeated \"Deadline voor indienen:\" fields\n   - Multiple \"MINI-COMPETITIE OPENEN\" buttons\n\n3. STAFFINGMS FORMAT:\n   - Multiple \"Request ID:\" entries\n   - Repeated job sections with similar formatting\n\n4. GENERAL PATTERNS:\n   - Email subject contains plural: \"nieuwe aanvragen\" (not \"aanvraag\")\n   - HTML tables with multiple <tbody> or repeated <tr> groups\n   - Multiple deadline dates throughout the email\n   - Numbered sections (Job 1, Job 2, etc.)\n\nEXTRACTION STRATEGY:\n- Parse the email sequentially from top to bottom\n- When you encounter a complete job entry (with title, code, deadline), store it\n- Continue scanning for the next job entry with same pattern\n- Stop only when entire email is processed\n- Count your extracted jobs against indicators (e.g., if 3 \"Aanvraag:\" codes found, you should have 3 jobs)\n\n========================\nREAL EXAMPLE: MULTI-JOB EMAIL\n========================\n\nExample email contains:\n\"\"\"\nNieuwe aanvraag - Programmamanager Digitale Weerbaarheid\nAanvraag: 260212-MT-001\nStartdatum opdracht: Zo spoedig mogelijk\nVerwachte einddatum: 31-12-2026\nPlaats van opdracht: Enschede\nMax. uurtarief: 115,00\nDeadline: 27 feb 2026 12:00 uur\n[Bekijk aanvraag 260212-MT-001 button with link1]\n\nNieuwe aanvraag - Management Assistent(e) LPN Area South\nAanvraag: 260213-M-001\nStartdatum opdracht: Zo spoedig mogelijk\nVerwachte einddatum: 31-12-2026\nPlaats van opdracht: Arnhem (hybride)\nMax. uurtarief: 65,00\nDeadline: 18 feb 2026 12:00 uur\n[Bekijk aanvraag 260213-M-001 button with link2]\n\nHerhaalde aanvraag - Adviseur Omgevingsmanagement Project Werpsterhoek\nAanvraag: 260212-HKO-006\nStartdatum opdracht: Zo spoedig mogelijk\nVerwachte einddatum: 29-02-2028\nPlaats van opdracht: Grou, Leeuwarden en hybride\nMax. uurtarief: 81,00\nDeadline: 17 feb 2026 10:00 uur\n[Bekijk aanvraag 260212-HKO-006 button with link3]\n\nSender: Magnit\n\"\"\"\n\nCORRECT OUTPUT (3 jobs = 3 objects):\n[\n  {\n    \"job_title\": \"Programmamanager Digitale Weerbaarheid\",\n    \"customer\": \"UNKNOWN\",\n    \"location\": \"Enschede\",\n    \"rate\": \"€ 115,00\",\n    \"duration_end_date\": \"31-12-2026\",\n    \"closing_date\": \"27 feb 2026 12:00 uur\",\n    \"broker\": \"Magnit\",\n    \"job_description\": \"UNKNOWN\",\n    \"link\": \"link1\"\n  },\n  {\n    \"job_title\": \"Management Assistent(e) LPN Area South\",\n    \"customer\": \"UNKNOWN\",\n    \"location\": \"Arnhem (hybride)\",\n    \"rate\": \"€ 65,00\",\n    \"duration_end_date\": \"31-12-2026\",\n    \"closing_date\": \"18 feb 2026 12:00 uur\",\n    \"broker\": \"Magnit\",\n    \"job_description\": \"UNKNOWN\",\n    \"link\": \"link2\"\n  },\n  {\n    \"job_title\": \"Adviseur Omgevingsmanagement Project Werpsterhoek\",\n    \"customer\": \"UNKNOWN\",\n    \"location\": \"Grou, Leeuwarden en hybride\",\n    \"rate\": \"€ 81,00\",\n    \"duration_end_date\": \"29-02-2028\",\n    \"closing_date\": \"17 feb 2026 10:00 uur\",\n    \"broker\": \"Magnit\",\n    \"job_description\": \"UNKNOWN\",\n    \"link\": \"link3\"\n  }\n]\n\n❌ WRONG: Extracting only 1 job and stopping\n✅ CORRECT: Extracting all 3 jobs\n\n========================\nOUTPUT FORMAT\n========================\n\nReturn ONLY valid JSON array with this structure:\n\n[\n  {\n    \"job_title\": \"string\",\n    \"customer\": \"string\",\n    \"location\": \"string\",\n    \"rate\": \"string\",\n    \"duration_end_date\": \"string\",\n    \"closing_date\": \"string\",\n    \"broker\": \"string\",\n    \"job_description\": \"string\",\n    \"link\": \"string\"\n  }\n]\n\nCRITICAL OUTPUT RULES:\n- ALWAYS return an array [] (even for 1 job)\n- Each job = separate object {} in array\n- Array length MUST equal number of jobs in email\n- If email has 3 jobs, output MUST have 3 objects\n- If email has 1 job, output MUST have 1 object\n- NO explanations before or after the JSON\n- NO markdown code blocks (no ```json```)\n- NO additional text or commentary\n- NO null values - use \"UNKNOWN\" for missing fields\n- All 9 fields must be present in each object\n- Ensure valid JSON syntax (proper commas, brackets, quotes)\n\nVERIFICATION CHECKLIST BEFORE OUTPUT:\n☐ Did I count the jobs in the email?\n☐ Does my output array have that many objects?\n☐ Does each object have all 9 fields?\n☐ Did I use \"UNKNOWN\" instead of null?\n☐ Is my JSON valid (no syntax errors)?\n☐ Did I extract the link for EACH job?\n\nFINAL OUTPUT: Return ONLY the JSON array, nothing else."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1648,
+        96
+      ],
+      "id": "6b781384-5e69-4d72-98f7-1f3617a79cc0",
+      "name": "Extracting Data From Mail",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000
+    },
+    {
+      "parameters": {
+        "content": "#  Automated Job Email Extraction to Google Sheets\n\n---\n\n## 🎯 Purpose\n\nAutomatically monitors Outlook emails, identifies vacancy emails using AI, extracts job details, and saves them to Google Sheets.\n\n**Frequency:** Every minute  \n**AI Model:** GPT-4o-mini  \n\n---\n\n## 🔄 Workflow Steps\n```\nOutlook Trigger → Get Email → Filter Internal \n→ Get Folder → AI Classify → Filter Vacancy \n→ AI Extract Data → Save to Google Sheets\n```\n\n---\n\n## 📋 What It Does\n\n### 1. Email Monitoring\n- Checks Outlook inbox every minute\n- Fetches full email details\n\n### 2. Filtering\n- Excludes emails from @helixons.nl (internal)\n- AI classifies as VACANCY or NOT_VACANCY\n- Only processes vacancy emails\n\n### 3. Data Extraction\nAI extracts these fields:\n- Job Title\n- Client/Project\n- Location\n- Job Description\n- Rate/Salary\n- Closing Date\n- Source Folder\n- Sender Email\n\n### 4. Database Storage\n- Saves to Google Sheets: \"Outlook Mail's Data\"\n- Updates existing entries if Job Description matches\n- Returns \"NAN\" for missing information\n\n---\n\n## 🤖 AI Classification Rules\n\n**VACANCY emails include:**\n- Job titles, roles, positions\n- Job descriptions or responsibilities\n- Salary, rates, or compensation\n- Requests for candidates or CVs\n\n**NOT_VACANCY emails include:**\n- Invoices, receipts\n- Meeting invites\n- Newsletters, marketing\n- Reply emails (\"Thanks\", \"Noted\")\n\n---\n\n## 🔐 Required Credentials\n\n1. **Microsoft Outlook OAuth2** - Read emails & folders\n2. **OpenAI API** - GPT-4o-mini access\n3. **Google Sheets OAuth2** - Edit spreadsheets\n\n---\n\n## 📊 Example\n\n**Input Email:**\n```\nFrom: recruiter@agency.com\nSubject: Senior Developer - Amsterdam\nBody: Hiring Full Stack Developer, €600/day, Closes Feb 15\n```\n\n**Output to Google Sheets:**\n| Job title | Client | Location | Rate | Closing Date | Sender |\n|-----------|--------|----------|------|--------------|--------|\n| Senior Full Stack Developer | Agency | Amsterdam | €600/day | Feb 15 2026 | recruiter@agency.com |\n\n---\n\n## ⚡ Performance\n\n- **Speed:** 5-10 seconds per email\n- **Accuracy:** High for clearly formatted vacancy emails\n- **Duplicates:** Prevented by Job Description matching\n\n---\n\n## 🐛 Troubleshooting\n\n| Issue | Solution |\n|-------|----------|\n| No emails processing | Check Outlook trigger active & credentials valid |\n| All marked NOT_VACANCY | Verify email body is being read correctly |\n| Too many \"NAN\" values | Check email format compatibility |\n| Duplicate entries | Ensure Job Description matching is enabled |\n\n---\n\n## 🔧 Maintenance\n\n- **Monthly:** Review data quality in Google Sheets\n- **Quarterly:** Check AI classification accuracy\n- **As Needed:** Update prompts for new email formats\n\n---\n\n## 📝 Technical Details\n\n**Workflow ID:** `0169d097b99abd86140ed74424abfacd63cb6eaa65c1383d6f7a415ba1a0a554`  \n**Version:** 1.0  ",
+        "height": 2784,
+        "width": 1552,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -2352,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "a6173535-f2b9-43a0-8f96-89da26725acd",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "resource": "worksheet",
+        "operation": "append",
+        "workbook": {
+          "__rl": true,
+          "value": "01I32RJALJNO64MRYSTFCZ57ZAHUN5PMAB",
+          "mode": "list",
+          "cachedResultName": "Outlook Mail's Data 1",
+          "cachedResultUrl": "https://helixonsengineeringbv351-my.sharepoint.com/personal/s_akbas_helixons_nl/_layouts/15/Doc.aspx?sourcedoc=%7BC6BD6B69-1247-4599-9EFF-203D1BD7B001%7D&file=Outlook%20Mail%27s%20Data%201.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1"
+        },
+        "worksheet": {
+          "__rl": true,
+          "value": "{00000000-0001-0000-0000-000000000000}",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://helixonsengineeringbv351-my.sharepoint.com/personal/s_akbas_helixons_nl/_layouts/15/Doc.aspx?sourcedoc=%7BC6BD6B69-1247-4599-9EFF-203D1BD7B001%7D&file=Outlook%20Mail%27s%20Data%201.xlsx&action=default&mobileredirect=true&DefaultItemOpen=1&activeCell=Sheet1!A1"
+        },
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Date",
+              "fieldValue": "={{ $now.format('yyyy-MM-dd HH:mm:ss') }}"
+            },
+            {
+              "column": "Job title",
+              "fieldValue": "={{ $json.job_title }}"
+            },
+            {
+              "column": "Customer",
+              "fieldValue": "={{ $json.customer }}"
+            },
+            {
+              "column": "Location",
+              "fieldValue": "={{ $json.location }}"
+            },
+            {
+              "column": "Rate ",
+              "fieldValue": "={{ $json.rate }}"
+            },
+            {
+              "column": "Duration / End Date",
+              "fieldValue": "={{ $json.duration_end_date }}"
+            },
+            {
+              "column": "Closing Date",
+              "fieldValue": "={{ $json.closing_date }}"
+            },
+            {
+              "column": "Broker",
+              "fieldValue": "={{ $json.broker }}"
+            },
+            {
+              "column": "Job Description",
+              "fieldValue": "={{ $json.job_description }}"
+            },
+            {
+              "column": "Link",
+              "fieldValue": "={{ $json.link }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftExcel",
+      "typeVersion": 2.2,
+      "position": [
+        2336,
+        96
+      ],
+      "id": "bcda2c86-7680-4ce4-add5-6d259f92ab13",
+      "name": "Append data to sheet",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "microsoftExcelOAuth2Api": {
+          "id": "Q3XTCHr87G8uWiQg",
+          "name": "Microsoft Excel account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        2112,
+        96
+      ],
+      "id": "055f965f-a8c1-4d77-8b76-ec88daf0fed3",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        1616,
+        320
+      ],
+      "id": "c592a685-fb88-4e69-aac0-63788a872b9b",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "cbI7X1RhPekZXbCG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "limit": 5,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        784
+      ],
+      "id": "74f00b59-9cb6-497e-9edf-2fb75dd5ddfd",
+      "name": "Get many messages",
+      "webhookId": "ed945f82-6ed6-49ba-a1eb-21ec4f6238ac",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "AMb4RA8ECp9BQNxe",
+          "name": "Microsoft Outlook account 3"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get message detail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Extracting Data From Mail",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Checking if mail is of vacancy",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Checking if mail is of vacancy",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get message detail": {
+      "main": [
+        [
+          {
+            "node": "Filter Internal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Internal": {
+      "main": [
+        [
+          {
+            "node": "Get folder of mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get folder of mail": {
+      "main": [
+        [
+          {
+            "node": "Checking if mail is of vacancy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checking if mail is of vacancy": {
+      "main": [
+        [
+          {
+            "node": "Filtering NON-Vacancy mails",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtering NON-Vacancy mails": {
+      "main": [
+        [
+          {
+            "node": "Extracting Data From Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extracting Data From Mail": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Append data to sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extracting Data From Mail",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "a3b25df5-d31a-4b13-a6ae-65930b74b72a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0169d097b99abd86140ed74424abfacd63cb6eaa65c1383d6f7a415ba1a0a554"
+  },
+  "id": "a4KI3tH4KmyxdnT2",
+  "tags": []
+}

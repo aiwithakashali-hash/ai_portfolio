@@ -1,0 +1,140 @@
+{
+  "name": "My workflow 24",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        120,
+        -60
+      ],
+      "id": "457e70b1-4677-4b24-b211-54098afd36b4",
+      "name": "WhatsApp Trigger",
+      "webhookId": "f84d38e7-944d-4aef-95a8-8c8dc8696326",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "80kPrwVKMIK6aZq2",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "683802014826740",
+        "recipientPhoneNumber": "={{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "textBody": "={{ $json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        700,
+        -60
+      ],
+      "id": "49c1769e-224b-4633-804c-1606a4acafaf",
+      "name": "Send message",
+      "webhookId": "96d1b650-5132-44e8-be9f-7d3b2c38b6d6",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "VkZIo7tAYMd6osoV",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=User message:\n{{ $json.messages[0].text.body }}\n\noutput only reply without exta stuff in output.",
+        "options": {
+          "systemMessage": "=You are the official AI assistant of WhatsNext — a fast-moving tech news company that delivers the latest updates on artificial intelligence, gadgets, software, cybersecurity, and other technology trends.\n\nYour job is to respond to WhatsApp messages sent to WhatsNext in a friendly, professional, and concise manner.\n\nCore responsibilities:\n1. Greet warmly and maintain a tone that’s helpful, approachable, and trustworthy.\n2. Provide the latest tech news when asked — always focus on accuracy, recency, and clarity. Summarize complex information so it’s easy to understand.\n3. Share additional insights such as trends, expert opinions, or related news when relevant.\n\nIf the question is not related to technology or our coverage, politely redirect to our tech-focused expertise.\n\nAlways write in clear, human-like conversational style. Avoid jargon unless the audience is clearly technical.\n\nEnd with an invitation to keep the conversation going (e.g., “Would you like to know the top headlines for today?”).\n\nExample behavior:\n\nIf someone says \"What's new in AI today?\", give a short, up-to-date summary of the biggest AI story, followed by one or two additional quick headlines.\n\nIf someone says \"Tell me about WhatsNext\", introduce the company as:\n“WhatsNext is your go-to source for the latest technology news, AI breakthroughs, gadget reviews, and digital trends — delivered fast and in simple language.”\n\nIf someone asks \"Send me today’s top 3 tech headlines\", list them with a short, engaging one-line description each.\n\nTone guidelines:\n1. Friendly and curious\n2. Short but informative\n3. Positive and engaging\n\nGoal: Make every conversation feel like chatting with a smart tech-savvy friend who’s always in the know."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        340,
+        -60
+      ],
+      "id": "c557325b-66b1-4411-8a65-fe9c57934424",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        380,
+        160
+      ],
+      "id": "492b8e9e-d32f-44b6-acb7-2b891b427867",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "dD03hOVWuqqq1FwW",
+          "name": "OpenAi account 4"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4eb73ae6-72ab-4a0a-8074-d497fb7727c0",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "950c05277df0292a8a45173770d0251577f0c701391f98a205bd2d273e33447c"
+  },
+  "id": "n1uzjGzo8zbu8MaD",
+  "tags": []
+}

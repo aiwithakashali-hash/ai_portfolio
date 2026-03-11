@@ -1,0 +1,405 @@
+{
+  "name": "Telegram calendar bot",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        -224
+      ],
+      "id": "98ca9b3f-1e9a-4bd3-b960-adaa41c51962",
+      "name": "Telegram Trigger",
+      "webhookId": "8a14951d-fc06-44b2-b625-18e830ad0345",
+      "retryOnFail": false,
+      "credentials": {
+        "telegramApi": {
+          "id": "F8NDieO1AbnEeSeI",
+          "name": "Telegram account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "6676544459",
+        "text": "hello from n8n",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        -224
+      ],
+      "id": "2a96d20b-b6e4-4644-9ccd-df4a515bd13f",
+      "name": "Send a text message",
+      "webhookId": "031a1878-a62e-43a7-b0f0-ba63b8229cf5",
+      "credentials": {
+        "telegramApi": {
+          "id": "cflB4uXHRt8FsL4I",
+          "name": "ak Telegram account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "1"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -448,
+        176
+      ],
+      "id": "18026bf2-abd9-43d6-934a-12547e2e18e0",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -592,
+        176
+      ],
+      "id": "bb963272-1754-490b-93ec-7e6c527d66ba",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "BKblCh3wxD9WByys",
+          "name": "ak OpenAi account 5"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=Overview\nYou are a calendar assistant. Your responsibilities include creating, getting, updating, and deleting events in the user's calendar.\n\nCalendar Management Tools:\nUse \"Create an event with Attendees\" when an event includes a participant.\nUse \"Create an event\" for solo events.\nUse \"Get many events\" to fetch calendar schedules when requested.\nUse \"Delete an event\" to delete an event. You MUST call \"Get many events\" first to retrieve the event ID before deleting.\nUse \"Update an event\" to update an event. You MUST call \"Get many events\" first to retrieve the event ID before updating.\nUse \"Get many database pages in Notion\" to look up contact information when a person is mentioned.\n\nMANDATORY TOOL RULES — YOU MUST FOLLOW THESE:\n* If a person's name is mentioned → You MUST call \"Get many database pages in Notion\" FIRST. Do not skip this step.\n* Only after getting Notion results → extract the email → call \"Create an event with Attendees\"\n* If no email found in Notion → call \"Create an event\" instead and tell the user\n* To delete or update → ALWAYS call \"Get many events\" first to get the event ID. Never skip this.\n* Never guess, assume, or skip any tool call. Always execute the required tools in order.\n\nRules\n* Turn the incoming query into an action. Never ask clarifying questions — just act.\n* Always include the event link in your response.\n\nFinal Notes\nHere is the current date/time: {{ $now }}\nIf no duration is specified, assume 1 hour.\nIf no date is mentioned, assume today.\nIf no time is mentioned, assume the next round hour."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        -144,
+        -240
+      ],
+      "id": "7a2e2b36-1288-4850-a083-99c3695b5231",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aiwithakashali@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiwithakashali@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('attendees0_Attendees', ``, 'string') }}"
+          ],
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        160
+      ],
+      "id": "59a5a012-49da-4949-846d-3d7455da98e8",
+      "name": "Create an event with Attendees",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "AkRTXBcSW4i3fCT5",
+          "name": "ak Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "aiwithakashali@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiwithakashali@gmail.com"
+        },
+        "limit": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Limit', ``, 'number') }}",
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('After', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Before', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        160
+      ],
+      "id": "0ca004e8-7c97-487a-9bad-303a1777f127",
+      "name": "Get many events",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "AkRTXBcSW4i3fCT5",
+          "name": "ak Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "calendar": {
+          "__rl": true,
+          "value": "aiwithakashali@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiwithakashali@gmail.com"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        16,
+        160
+      ],
+      "id": "d8d329d1-7354-4396-96f1-0911a320c717",
+      "name": "Delete an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "AkRTXBcSW4i3fCT5",
+          "name": "ak Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "calendar": {
+          "__rl": true,
+          "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Calendar', ``, 'string') }}",
+          "mode": "id",
+          "__regex": "(^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*)"
+        },
+        "eventId": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_ID', ``, 'string') }}",
+        "updateFields": {
+          "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+          "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+          "summary": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Summary', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        160
+      ],
+      "id": "ae50abe9-e827-4689-b901-923adfa83f1c",
+      "name": "Update an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "AkRTXBcSW4i3fCT5",
+          "name": "ak Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "aiwithakashali@gmail.com",
+          "mode": "list",
+          "cachedResultName": "aiwithakashali@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -272,
+        160
+      ],
+      "id": "4a4c9c8f-4d38-43e2-9032-cf2ff747389a",
+      "name": "Create an event",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "AkRTXBcSW4i3fCT5",
+          "name": "ak Google Calendar account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "320052e6-e241-804a-a5db-d72fdb2f2640",
+          "mode": "list",
+          "cachedResultName": "n8n ",
+          "cachedResultUrl": "https://www.notion.so/320052e6e241804aa5dbd72fdb2f2640"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        496,
+        160
+      ],
+      "id": "2e264593-652d-4082-997b-32320371d8b2",
+      "name": "Get many database pages in Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "hXWRs87GWHZzOIfs",
+          "name": "akNotion account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event with Attendees": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete an event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update an event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages in Notion": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "26712c27-82d5-405f-a0d4-388a50e2deaf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "950c05277df0292a8a45173770d0251577f0c701391f98a205bd2d273e33447c"
+  },
+  "id": "nnezye04QYvPFqHP",
+  "tags": []
+}

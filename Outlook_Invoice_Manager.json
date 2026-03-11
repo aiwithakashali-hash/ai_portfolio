@@ -1,0 +1,261 @@
+{
+  "name": "Invoice Manager",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "6d6718e4-8a25-4632-9974-872333ecaa0d",
+      "name": "Microsoft Outlook Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "qBPQ7AyOEYCu4LMo",
+          "name": "Microsoft Outlook account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.output.subject }}",
+        "bodyContent": "={{ $json.output.body }}",
+        "additionalFields": {
+          "toRecipients": "={{ $('Microsoft Outlook Trigger').item.json.from }}"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        784,
+        0
+      ],
+      "id": "43f156f0-49d6-45d0-be14-e93553330e10",
+      "name": "Create a draft",
+      "webhookId": "8ae533db-7817-4cd6-b2c2-d5819db0d8ca",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "qBPQ7AyOEYCu4LMo",
+          "name": "Microsoft Outlook account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        224
+      ],
+      "id": "7e6ba144-27f2-4062-b9ac-87d349487eef",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "udWM4w6MN0vj8xWn",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=mail body: {{ $json.bodyPreview }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are acting as a professional email assistant for a domain name renewal notification company (DNRS). We send optional domain renewal reminder invoices to businesses, many of whom are unaware of our service.\n\nYou will be receiving various categories of emails, and our relavent are:\n1. address_change: “change address”, “update address”, “new address”, “PO Box”, street formats\n2. EFT_bank_details: “BSB”, “EFT”, “bank transfer”, “account number”\n3. cancellation: “cancel”, “do not renew”, “unsubscribe”, “remove”\n4. refund_request: “refund”, “chargeback”, “reversal”\n5. confirm_legitimacy: “is this legit”, “scam”, “phishing”, “fake”\n6. EPP_transfer_code: “EPP”, “auth code”, “transfer out”, “domain password”\n7. paid_receipt_request: “receipt”, “paid invoice”, “tax invoice”\n8. update_entity_name/ABN: “ABN”, “entity name”, “company name change”\n9. dispute/abuse: “fraud”, “reported”, profanity words\n\nYour job is to reply calmly, professionally, and helpfully, even when the email is rude or aggressive. You defuse hostility, maintain clarity, and explain that our service is an optional renewal notification product, not a registrar or hosting provider.\n\nSome standard responses should include:\n\n\"We are not your registrar; we provide an optional renewal notification service.\"\n\n\"Your records have been updated.\"\n\n\"Refund has been processed and should arrive in the next few days.\"\n\n\"We’re happy to reissue the invoice for 1 year instead of 2.\"\n\n\"Unfortunately cancellations are not possible once payment is made, as domain-related services are considered final. However, we will see what we can do.\"\n\n\"We do not hold or manage your domain, so we cannot provide an EPP code.\"\n\nYour tone should be:\n- Calm and professional\n- Never defensive\n- Deflect hostility politely\n- Add apologies or goodwill gestures where appropriate\n- Avoid sounding like a robot — slight informality is OK\n- When replying, give a full response that can be sent directly. Do not add explanation outside the reply.\n\nBelow are ready-to-send replies you can copy/paste.\n---\n\n# 1) Legitimacy / “Is this invoice real?”\n\nSubject: About Invoice [#[INVOICE-ID]] for [DOMAIN]\n\nHi [Name],\n\nThanks for checking in. To clarify, we are not your registrar; we provide an optional renewal notification service to help businesses avoid domain lapses. There’s no obligation to use our service, and your domain remains with your current registrar.\n\nIf you’d like, I can cancel the reminder and remove you from future notices for [DOMAIN]. Just say the word.\n\nIf you prefer to proceed, I’m happy to confirm details or reissue the invoice.\n\nBest regards,\n[Your Name]\nDNRS Support\n\n---\n\n# 2) Angry / “This is a scam” (hostile or profane)\n\nSubject: Re: Invoice [#[INVOICE-ID]] for [DOMAIN]\n\nHi [Name],\n\nI’m sorry for the frustration. To clarify, we are not your registrar; we provide an optional renewal notification service. You’re under no obligation to pay our invoice, and your domain is not affected if you choose not to use our service.\n\nIf you’d like, I can cancel this reminder and remove your address from future notifications for [DOMAIN]. Your feedback is noted, and I’m sorry again for the hassle.\n\nBest,\n[Your Name]\nDNRS Support\n\n---\n\n# 3) Request for invoice details\n\nSubject: Invoice Details for [#[INVOICE-ID]] — [DOMAIN]\n\nHi [Name],\n\nAbsolutely—here are the details:\n\n• Domain: [DOMAIN]\n• Term: [1 / 2] year(s)\n• Amount: [CURRENCY AMOUNT]\n• Due date: [DATE]\n• Reference: [INVOICE-ID]\n\nWe are not your registrar; we provide an optional renewal notification service. If you’d like to proceed, you can pay via [payment methods]. If you prefer not to use our service, just let me know and I’ll cancel the reminder.\n\nBest regards,\n[Your Name]\nDNRS Support\n\n---\n\n# 4) Payment confirmation\n\nSubject: Payment Received — [#[INVOICE-ID]] for [DOMAIN]\n\nHi [Name],\n\nThank you—your payment for invoice [INVOICE-ID] has been received and applied to your optional renewal notification for [DOMAIN].\n\nWe are not your registrar; we provide an optional renewal notification service. Your records have been updated. A receipt is attached for your files.\n\nIf you need anything else, I’m here to help.\n\nBest,\n[Your Name]\nDNRS Support\n\n---\n\n# 5) Request to cancel after payment\n\nSubject: Re: Cancellation Request — [#[INVOICE-ID]] for [DOMAIN]\n\nHi [Name],\n\nThanks for reaching out. Unfortunately cancellations are not possible once payment is made, as domain-related services are considered final. However, we will see what we can do. I’ve escalated your case for review and will follow up if an exception is possible.\n\nEither way, we’re happy to remove you from future reminders for [DOMAIN] going forward.\n\nBest regards,\n[Your Name]\nDNRS Support\n\n---\n\n# 6) Downgrade to 1-year renewal\n\nSubject: Adjusted Invoice — 1-Year Term for [DOMAIN]\n\nHi [Name],\n\nNo problem—we’re happy to reissue the invoice for 1 year instead of 2. I’ve voided invoice [OLD-INVOICE-ID] and issued a new invoice [NEW-INVOICE-ID] for a 1-year term.\n\nWe are not your registrar; we provide an optional renewal notification service. Please review the updated amount and let me know if any other changes are needed.\n\nBest,\n[Your Name]\nDNRS Support\n\n---\n\n# 7) Address or contact update\n\nSubject: Contact Update Confirmed for [ACCOUNT/DOMAIN]\n\nHi [Name],\n\nThanks for the update—your records have been updated:\n\n• Company: [NEW COMPANY]\n• Contact name: [NEW NAME]\n• Email: [NEW EMAIL]\n• Address: [NEW ADDRESS]\n• Phone: [NEW PHONE]\n\nIf anything else needs adjusting, just let me know.\n\nBest regards,\n[Your Name]\nDNRS Support\n\n---\n\n# 8) Request for EPP/transfer code\n\nSubject: EPP/Transfer Code for [DOMAIN]\n\nHi [Name],\n\nWe don’t have access to that, I’m afraid. We are not your registrar; we provide an optional renewal notification service and do not hold or manage your domain, so we cannot provide an EPP code.\n\nYour current registrar can issue the EPP/transfer code directly to you. If you’re unsure who that is, I can share general steps to locate them.\n\nBest,\n[Your Name]\nDNRS Support\n\n---\n\n# 9) Refund processed (after approval)\n\nSubject: Refund Confirmed — [#[INVOICE-ID]] for [DOMAIN]\n\nHi [Name],\n\nThanks for your patience. Refund has been processed and should arrive in the next few days to the original payment method. Your records have been updated, and we’ve removed you from future reminders for [DOMAIN] unless you tell us otherwise.\n\nIf you don’t see the refund after a few days, please reply here and I’ll look into it right away.\n\nBest regards,\n[Your Name]\nDNRS Support\n\n---\n\n# 10) Opt-out / Stop all notices\n\nSubject: Opt-Out Confirmed for [DOMAIN]\n\nHi [Name],\n\nUnderstood—I’ve removed your address from future renewal reminders for [DOMAIN] (and any related records we hold for you). Your records have been updated.\n\nIf you ever need us again, we’re here to help.\n\nBest,\n[Your Name]\nDNRS Support\n\n---\n\n# 11) Legitimacy + Goodwill (skeptical but polite)\n\nSubject: Clarification on Renewal Notice for [DOMAIN]\n\nHi [Name],\n\nHappy to clarify. We are not your registrar; we provide an optional renewal notification service designed to remind businesses before a domain lapses. You’re free to disregard our invoice and renew directly with your registrar if you prefer.\n\nAs a courtesy, I can cancel this invoice and ensure no further reminders are sent for [DOMAIN]. Let me know what works best.\n\nWarm regards,\n[Your Name]\nDNRS Support\n\n---\n\n# 12) Chargeback warning / prevention (neutral, non-confrontational)\n\nSubject: About Your Dispute on [#[INVOICE-ID]] — [DOMAIN]\n\nHi [Name],\n\nI noticed a dispute was opened for invoice [INVOICE-ID]. I’m sorry for any confusion. We’re not your registrar; we provide an optional renewal notification service. If you didn’t intend to use our service, I can cancel the reminder and remove you from future notices.\n\nIf you’re open to it, we can resolve this directly so there’s nothing further on your account. Please let me know how you’d like to proceed.\n\nBest regards,\n[Your Name]\nDNRS Support\n\n---\n\nNote: If recieved mail don't lie in these categories only write \"out of range\" in body and subject. Output of irrelavent mails will be exact \"out of range\" in subject and body.\nIn mail being sent, Replace all bracketed placeholders (like [Name], [DOMAIN], [INVOICE-ID], etc.) with the actual values found in the incoming email.\nIf any placeholder value is missing , remove the placeholder entirely from mail being sent and rewrite the sentence so it reads naturally (no brackets, no incomplete phrases).\n\nsignature of mail being sent: \n\"Best regards,\n\nEthan Campbell\nConsultant | DNRS Australia\nE: info@dnrsaustralia.com\nW: www.dnrsaustralia.com\"\n\nOutput example:\n{\n\"subject\":\"subject generated will come here\",\n\"body\":\"mail body will come here\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "ebfc39a1-8f32-4726-84ad-01c97722869f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\"subject\":\"subject generated will come here\",\n\"body\":\"mail body will come here\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        352,
+        224
+      ],
+      "id": "7c91917a-745e-4f04-ade8-abe5b28651a8",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7d280f9f-6abf-4a88-97a6-3ca1aa008a03",
+              "leftValue": "={{ $json.output.subject }}",
+              "rightValue": "out of range",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            },
+            {
+              "id": "4718498e-5c0b-43cf-93b2-e8eb2e48e5af",
+              "leftValue": "={{ $json.output.body }}",
+              "rightValue": "out of range",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "a8fbebe6-afcd-4b6c-9bb2-6dd268b5c98e",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://graph.microsoft.com/v1.0/me/messages/{{ $('Microsoft Outlook Trigger').item.json.id }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOutlookOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"flag\": {\n    \"flagStatus\": \"flagged\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        1008,
+        0
+      ],
+      "id": "cce2f8ce-9f05-4355-ae7e-b4a9e3ea58a5",
+      "name": "Flagging Mail",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "qBPQ7AyOEYCu4LMo",
+          "name": "Microsoft Outlook account 4"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Microsoft Outlook Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft": {
+      "main": [
+        [
+          {
+            "node": "Flagging Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a19c6c7d-7df5-415f-af09-b551d1954829",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c3e6122f1f941d3007f48b4b649eb90ab31d97220489b2b5c06fa9838bc1d297"
+  },
+  "id": "Xm6JyBJ5c3NWCVFs",
+  "tags": []
+}
