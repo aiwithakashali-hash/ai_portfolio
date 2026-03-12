@@ -64,8 +64,8 @@
             I'm Akash and I'm a <span>n8n & AI Automation Expert</span>
           </div>
           <p>
-            I build intelligent automation workflows using **n8n**, integrate **Generative AI** models, and develop
-            **Machine Learning** solutions that turn raw data into actionable insights. With over a year of experience
+            I build intelligent automation workflows using <strong>n8n</strong>, integrate <strong>Generative AI</strong> models, and develop
+            <strong>Machine Learning</strong> solutions that turn raw data into actionable insights. With over a year of experience
             in AI/ML and focused expertise in n8n, I help businesses eliminate manual work and scale effortlessly.
           </p>
           <a href="./Akash_Ali_CV.pdf" download class="cv-download-btn">Download CV</a>
@@ -116,7 +116,7 @@
     </div>
   </section>
 
-  <!-- skills section (updated) -->
+  <!-- skills section -->
   <section class="skills" id="skills">
     <div class="max-width">
       <h2 class="title">My Skills</h2>
@@ -124,15 +124,15 @@
         <div class="column left">
           <div class="text">My core expertise</div>
           <div class="skill-description">
-            <h3><i class="fas fa-robot"></i> n8n AI Automation (3 Months)</h3>
+            <h3><i class="fas fa-robot"></i> n8n AI Automation (3 Months internship on site)</h3>
             <p>With 3 months in n8n AI Automation, I build intelligent workflows that connect tools, automate repetitive tasks, and deploy AI-powered pipelines that scale effortlessly.</p>
           </div>
           <div class="skill-description">
-            <h3><i class="fas fa-brain"></i> Generative AI (1 Year+)</h3>
+            <h3><i class="fas fa-brain"></i> Generative AI (1 Year+ experience)</h3>
             <p>With 1+ year in Generative AI, I leverage LLMs, diffusion models, and tools like Stable Diffusion and GPT to automate creativity and build powerful AI-driven applications.</p>
           </div>
           <div class="skill-description">
-            <h3><i class="fas fa-chart-line"></i> Machine Learning (1 Year+)</h3>
+            <h3><i class="fas fa-chart-line"></i> Machine Learning (1 Year+ experience )</h3>
             <p>With 1+ year in Machine Learning, I train, evaluate, and deploy models using TensorFlow and PyTorch — turning raw data into intelligent systems that solve real-world problems.</p>
           </div>
           <a href="#">Read more</a>
@@ -141,7 +141,7 @@
           <div class="bars">
             <div class="info">
               <span>n8n Automation</span>
-              <span>50%</span>
+              <span>60%</span>
             </div>
             <div class="line n8n"></div>
           </div>
@@ -164,19 +164,25 @@
     </div>
   </section>
 
-  <!-- projects section (n8n focused, no filters) -->
+  <!-- projects section (n8n, Generative AI, Machine Learning only) -->
   <section class="projects" id="projects">
     <div class="max-width">
       <h2 class="title">My Projects</h2>
 
+      <!-- Category Filter Buttons (updated) -->
+      <div class="project-categories">
+        <button class="category-btn active" data-category="all">All</button>
+        <button class="category-btn" data-category="n8n">n8n Automation</button>
+        <button class="category-btn" data-category="ai">Generative AI</button>
+        <button class="category-btn" data-category="ml">Machine Learning</button>
+      </div>
+
       <div class="projects-content">
-        <!-- 1.png - Scrap the Profile & Post Information -->
+        <!-- ========== n8n PROJECTS (JSON download) ========== -->
         <div class="card" data-category="n8n">
           <div class="box">
             <img src="./1.png" alt="Scrap the Profile & Post Information">
-            <div class="text">
-              <h2>Scrap the Profile & Post Information</h2>
-            </div>
+            <div class="text"><h2>Scrap the Profile & Post Information</h2></div>
             <p>n8n workflow that scrapes LinkedIn/Twitter profiles and posts, extracts key information, and stores it in Airtable/Google Sheets for lead generation.</p>
             <h3>Features:</h3>
             <ul>
@@ -191,13 +197,10 @@
           </div>
         </div>
 
-        <!-- 2.png - LinkedIn Lead scraper -->
         <div class="card" data-category="n8n">
           <div class="box">
             <img src="./2.png" alt="LinkedIn Lead scraper">
-            <div class="text">
-              <h2>LinkedIn Lead scraper</h2>
-            </div>
+            <div class="text"><h2>LinkedIn Lead scraper</h2></div>
             <p>n8n automation that searches for leads based on keywords, collects profile URLs, enriches data via PhantomBuster / ProxyCurl, and pushes to CRM.</p>
             <h3>Features:</h3>
             <ul>
@@ -212,13 +215,10 @@
           </div>
         </div>
 
-        <!-- 3.png - Whatsapp customer support AI Agent -->
         <div class="card" data-category="n8n">
           <div class="box">
             <img src="./3.png" alt="Whatsapp customer support AI Agent">
-            <div class="text">
-              <h2>Whatsapp customer support AI Agent</h2>
-            </div>
+            <div class="text"><h2>Whatsapp customer support AI Agent</h2></div>
             <p>AI‑powered WhatsApp bot built with n8n, using OpenAI for intent recognition and automated replies, connected to your knowledge base.</p>
             <h3>Features:</h3>
             <ul>
@@ -233,13 +233,10 @@
           </div>
         </div>
 
-        <!-- 4.png - Outlook Job Manager -->
         <div class="card" data-category="n8n">
           <div class="box">
             <img src="./4.png" alt="Outlook Job Manager">
-            <div class="text">
-              <h2>Outlook Job Manager</h2>
-            </div>
+            <div class="text"><h2>Outlook Job Manager</h2></div>
             <p>Automate job application tracking: when an email with “Job Application” arrives, n8n parses details, creates a Trello card, and sends a confirmation.</p>
             <h3>Features:</h3>
             <ul>
@@ -254,13 +251,10 @@
           </div>
         </div>
 
-        <!-- 5.png - Outlook Invoice manager -->
         <div class="card" data-category="n8n">
           <div class="box">
             <img src="./5.png" alt="Outlook Invoice manager">
-            <div class="text">
-              <h2>Outlook Invoice manager</h2>
-            </div>
+            <div class="text"><h2>Outlook Invoice manager</h2></div>
             <p>When an invoice arrives by email, n8n extracts the PDF, reads data (via OCR if needed), logs it in Google Sheets, and sends a payment reminder.</p>
             <h3>Features:</h3>
             <ul>
@@ -275,13 +269,10 @@
           </div>
         </div>
 
-        <!-- 6.png - Telegram calendar bot -->
         <div class="card" data-category="n8n">
           <div class="box">
             <img src="./6.png" alt="Telegram calendar bot">
-            <div class="text">
-              <h2>Telegram calendar bot</h2>
-            </div>
+            <div class="text"><h2>Telegram calendar bot</h2></div>
             <p>Interactive Telegram bot that lets users create events, check schedules, and receive reminders – powered by n8n and Google Calendar API.</p>
             <h3>Features:</h3>
             <ul>
@@ -295,10 +286,156 @@
             </button>
           </div>
         </div>
+
+        <!-- ========== GENERATIVE AI PROJECTS (with Get Code modal) ========== -->
+        <div class="card" data-category="ai">
+          <div class="box">
+            <img src="./AI image generator.jpg" alt="AI Image Generator">
+            <div class="text"><h2>AI Image Generator</h2></div>
+            <p>This project generates images based on text prompts using advanced deep learning models, transforming textual descriptions into realistic visuals.</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>Transforms text prompts into high-quality images.</li>
+              <li>Utilizes state-of-the-art deep learning algorithms.</li>
+              <li>Supports various styles and resolutions for generated visuals.</li>
+              <li>Customizable parameters for creative outputs.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
+
+        <div class="card" data-category="ai">
+          <div class="box">
+            <img src="./Customer service.jpg" alt="AI Customer Service">
+            <div class="text"><h2>AI Customer Service</h2></div>
+            <p>This project focuses on delivering efficient customer service solutions using the Royalty AI Chatbot. It combines AI-driven assistance with professional support to enhance user satisfaction and streamline query resolution.</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>AI-powered chatbot for instant query resolution.</li>
+              <li>Seamless integration with customer support systems.</li>
+              <li>24/7 availability for uninterrupted assistance.</li>
+              <li>Customizable responses to suit business needs.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
+
+        <div class="card" data-category="ai">
+          <div class="box">
+            <img src="./PDF Chatting App.webp" alt="PDF Chatting App">
+            <div class="text"><h2>PDF Chatting App</h2></div>
+            <p>This project enables users to interact with PDF documents using AI, making it easier to extract and summarize information.</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>AI-powered interaction with PDF documents.</li>
+              <li>Efficiently search and retrieve document content.</li>
+              <li>Summarize lengthy PDFs for quick understanding.</li>
+              <li>Ask questions and receive answers directly from the document.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
+
+        <div class="card" data-category="ai">
+          <div class="box">
+            <img src="./Text_Generation.jpg" alt="AI Text Generator">
+            <div class="text"><h2>AI Text Generator</h2></div>
+            <p>This project utilizes advanced natural language processing (NLP) techniques to generate coherent and contextually relevant text, making it ideal for content creation and automation.</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>Generates human-like text using NLP models.</li>
+              <li>Supports various writing styles and tones.</li>
+              <li>Customizable prompts for tailored outputs.</li>
+              <li>Efficient and scalable for large-scale content generation.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
+
+        <div class="card" data-category="ai">
+          <div class="box">
+            <img src="./Voice to Text.jpg" alt="Voice to Text Generation">
+            <div class="text"><h2>Voice to Text Generation</h2></div>
+            <p>This project converts spoken words into written text</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>Accurate speech-to-text conversion.</li>
+              <li>Supports multiple languages and accents.</li>
+              <li>Real-time transcription capabilities.</li>
+              <li>Customizable for various use cases like meetings, lectures, and more.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
+
+        <!-- ========== MACHINE LEARNING PROJECTS (with Get Code modal) ========== -->
+        <div class="card" data-category="ml">
+          <div class="box">
+            <img src="./House Price.jpg" alt="House Price Prediction">
+            <div class="text"><h2>House Price Prediction</h2></div>
+            <p>This project predicts house prices using a machine learning model that analyzes various factors such as location, size, and market trends.</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>Accurate prediction of house prices based on input features.</li>
+              <li>Utilizes advanced regression techniques for analysis.</li>
+              <li>Supports customizable parameters for tailored predictions.</li>
+              <li>Provides insights into market trends and property valuation.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
+
+        <div class="card" data-category="ml">
+          <div class="box">
+            <img src="./Tip Predictor.jpg" alt="Tip Prediction">
+            <div class="text"><h2>Tip Prediction</h2></div>
+            <p>This project predicts the tip amount for a given bill using machine learning models, analyzing factors like total bill, party size, and service quality.</p>
+            <h3>Features:</h3>
+            <ul>
+              <li>Accurately predicts tip amounts based on input data.</li>
+              <li>Utilizes regression models for precise analysis.</li>
+              <li>Supports customizable parameters for tailored predictions.</li>
+              <li>Provides insights into tipping behavior and trends.</li>
+            </ul>
+            <button class="code-btn" data-contact="akashali4670@gmail.com | GitHub: akash-dev">
+              <i class="fas fa-code"></i> Get Code
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Modal is removed; download is direct -->
+    <!-- Modal for Get Code -->
+    <div id="contactModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Contact for Code</h3>
+        <p id="contactInfo"></p>
+        <div class="social-icons">
+          <a href="https://www.linkedin.com/in/akash-ali-71441b324/" target="_blank">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://mail.google.com/mail/?view=cm&to=akashali4670@gmail.com" target="_blank">
+            <i class="fas fa-envelope"></i>
+          </a>
+          <a href="http://discordapp.com/users/1339216668441710672" target="_blank">
+            <i class="fab fa-discord"></i>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- contact section -->
