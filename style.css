@@ -449,6 +449,15 @@ background: crimson;
     overflow-x: auto;
     padding-bottom: 20px;
     scroll-behavior: smooth;
+    transition: opacity 0.3s ease;
+}
+
+.projects-content.hidden {
+    opacity: 0;
+}
+
+.projects-content.visible {
+    opacity: 1;
 }
 
 .projects-content::-webkit-scrollbar {
@@ -484,7 +493,57 @@ background: crimson;
     border-radius: 5px;
 }
 
-.json-btn {
+.projects .card .text h2 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+    color: crimson;
+}
+
+.projects .card ul {
+    text-align: left;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.projects .card p {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Project Categories (filter buttons) */
+.project-categories {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.category-btn {
+    padding: 10px 25px;
+    border: 2px solid crimson;
+    background: transparent;
+    color: #fff;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.category-btn:hover {
+    background: rgba(220, 20, 60, 0.2);
+}
+
+.category-btn.active {
+    background: crimson;
+    color: #fff;
+}
+
+/* Buttons for JSON download and Get Code */
+.json-btn, .code-btn {
     background: crimson;
     color: white;
     border: none;
@@ -496,18 +555,91 @@ background: crimson;
     font-size: 14px;
 }
 
-.json-btn:hover {
+.json-btn:hover, .code-btn:hover {
     background: #fff;
     color: crimson;
 }
 
-.json-btn i {
+.json-btn i, .code-btn i {
     margin-right: 5px;
 }
 
-/* Modal not used anymore, but keep if needed elsewhere */
+/* Modal Styles */
 .modal {
     display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+    background: #222;
+    margin: 15% auto;
+    padding: 25px;
+    width: 70%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+    animation: modalSlide 0.3s ease;
+    color: #fff;
+}
+
+@keyframes modalSlide {
+    from {transform: translateY(-100px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #aaa;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: #fff;
+}
+
+#contactInfo {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 16px;
+    word-break: break-word;
+}
+
+.social-icons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.social-icons a {
+    color: #fff;
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: crimson;
+}
+
+.fa-discord {
+    color: #5865F2;
+    background: white;
+    border-radius: 50%;
+    padding: 3px;
+}
+
+.social-icons a:hover .fa-discord {
+    color: #5865F2;
+    background: rgba(255, 255, 255, 0.9);
 }
 
 /* Contact Section */
