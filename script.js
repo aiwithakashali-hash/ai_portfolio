@@ -2,7 +2,7 @@ $(document).ready(function() {
     $(window).scroll(function() {
         if(this.scrollY > 20) {
             $('.navbar').addClass("sticky");
-        }else {
+        } else {
             $('.navbar').removeClass("sticky");
         }
         if(this.scrollY > 500) {
@@ -34,21 +34,76 @@ $(document).ready(function() {
         $('.navbar .menu').toggleClass("active");
         $('.menu-btn i').toggleClass("active");
     });
-});
 
-// JSON download functionality
-document.querySelectorAll('.json-btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const fileName = this.getAttribute('data-json');
-        if (fileName) {
-            // Trigger download by creating a temporary anchor
-            const link = document.createElement('a');
-            link.href = './' + fileName; // assumes JSON files are in same directory
-            link.download = fileName;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+    // PROJECT FILTERING
+    const filterButtons = document.querySelectorAll('.category-btn');
+    const projectCards = document.querySelectorAll('.projects-content .card');
+    
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            const category = this.dataset.category;
+            
+            // Add transition effect
+            const projectsContent = document.querySelector('.projects-content');
+            projectsContent.classList.add('hidden');
+            
+            setTimeout(() => {
+                projectCards.forEach(card => {
+                    if(category === 'all' || card.dataset.category === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                projectsContent.classList.remove('hidden');
+                projectsContent.classList.add('visible');
+                
+                // Reset scroll position
+                projectsContent.scrollLeft = 0;
+            }, 300);
+        });
     });
+
+    // JSON DOWNLOAD (for n8n projects)
+    document.querySelectorAll('.json-btn').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const fileName = this.getAttribute('data-json');
+            if (fileName) {
+                const link = document.createElement('a');
+                link.href = './' + fileName;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        });
+    });
+
+    // MODAL FOR "GET CODE"
+    document.querySelectorAll('.code-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const contactInfo = this.getAttribute('data-contact');
+            document.getElementById('contactInfo').textContent = contactInfo;
+            document.getElementById('contactModal').style.display = 'block';
+        });
+    });
+
+    // Close modal with × button
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('contactModal').style.display = 'none';
+    });
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('contactModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    };
 });
